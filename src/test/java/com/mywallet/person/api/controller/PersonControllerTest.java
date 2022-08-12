@@ -73,7 +73,6 @@ public class PersonControllerTest {
 		PersonDTO personDTO = wrapperHelper.unwrapper(response.getResponse().getContentAsString(), PersonDTO.class);
 
 		assertNotNull(personDTO);
-		assertEquals(personDTOMock.getId(), personDTO.getId());
 		assertEquals(personDTOMock.getName(), personDTO.getName());
 		assertEquals(personDTOMock.getSurname(), personDTO.getSurname());
 	}
@@ -117,7 +116,6 @@ public class PersonControllerTest {
 		assertEquals(1, persons.size());
 
 		PersonDTO personDTO = persons.stream().findFirst().get();
-		assertEquals(personDTOMock.getId(), personDTO.getId());
 		assertEquals(personDTOMock.getName(), personDTO.getName());
 		assertEquals(personDTOMock.getSurname(), personDTO.getSurname());
 	}
