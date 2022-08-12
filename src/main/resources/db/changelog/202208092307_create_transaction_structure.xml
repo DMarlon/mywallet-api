@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+    <changeSet author="marlon" id="20220809230717">
+		<createTable tableName="transaction">
+			<column autoIncrement="true" name="tra_id" type="INTEGER">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="transaction_pkey"/>
+			</column>
+			<column name="tra_wallet_id" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+			<column name="tra_number" type="UUID">
+				<constraints nullable="false"/>
+			</column>
+			<column name="tra_datetime" type="TIMESTAMP">
+				<constraints nullable="false"/>
+			</column>
+			<column name="tra_operation" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="tra_type" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="tra_value" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+			<column name="tra_observation" type="VARCHAR(150)"/>
+		</createTable>
+    </changeSet>
+    
+    <changeSet author="marlon" id="20220809230726">
+        <createIndex indexName="idx_tra_number" tableName="transaction">
+            <column name="tra_number"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="marlon" id="20220809230732">
+		<addUniqueConstraint columnNames="tra_number" constraintName="tra_number_uni" tableName="transaction"/>
+	</changeSet>
+	
+	<changeSet author="marlon" id="20220809230744">
+		<addForeignKeyConstraint baseColumnNames="tra_wallet_id" baseTableName="transaction" constraintName="fk_transaction_wallet_wal_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="wal_id" referencedTableName="wallet" validate="true"/>
+	</changeSet>
+</databaseChangeLog>

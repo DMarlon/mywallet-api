@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+    <changeSet author="marlon" id="20220809230127">
+		<createTable tableName="wallet">
+			<column autoIncrement="true" name="wal_id" type="INTEGER">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="wallet_pkey"/>
+			</column>
+			<column name="wal_person_id" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+			<column name="wal_number" type="UUID">
+				<constraints nullable="false"/>
+			</column>
+				<column name="wal_balance" type="INTEGER">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+    </changeSet>
+    
+    <changeSet author="marlon" id="20220809230132">
+        <createIndex indexName="idx_wal_number" tableName="wallet">
+            <column name="wal_number"/>
+        </createIndex>
+    </changeSet>
+   
+	<changeSet author="marlon" id="20220809230141">
+		<addUniqueConstraint columnNames="wal_number" constraintName="wal_number_uni" tableName="wallet"/>
+	</changeSet>
+	
+	<changeSet author="marlon" id="20220809230152">
+		<addForeignKeyConstraint baseColumnNames="wal_person_id" baseTableName="wallet" constraintName="fk_wallet_person_per_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="per_id" referencedTableName="person" validate="true"/>
+	</changeSet>
+</databaseChangeLog>
