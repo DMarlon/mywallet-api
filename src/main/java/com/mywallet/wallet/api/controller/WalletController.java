@@ -22,7 +22,7 @@ import com.mywallet.core.domain.utilitary.ValidatorUtils;
 import com.mywallet.wallet.api.dto.BalanceTicketDTO;
 import com.mywallet.wallet.api.dto.DepositDTO;
 import com.mywallet.wallet.api.dto.TransactionDTO;
-import com.mywallet.wallet.api.dto.TransactionTicketDTO;
+import com.mywallet.wallet.api.dto.StatementDTO;
 import com.mywallet.wallet.api.dto.TransferDTO;
 import com.mywallet.wallet.api.dto.TransferTicketDTO;
 import com.mywallet.wallet.api.dto.WalletDTO;
@@ -111,15 +111,15 @@ public class WalletController {
 		return BalanceTicketDTO.valueOf(wallet.get());
 	}
 
-	@GetMapping("/{walletNumber:^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$}/transaction")
-	public TransactionTicketDTO transaction(@PathVariable("walletNumber") UUID walletNumber) {
+	@GetMapping("/{walletNumber:^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$}/statement")
+	public StatementDTO statement(@PathVariable("walletNumber") UUID walletNumber) {
 		Optional<Wallet> wallet = walletListService.findByNumber(walletNumber);
 		if (wallet.isEmpty())
 			throw new ResponseStatusException(HttpStatus.NO_CONTENT);
 
 		List<Transaction> transactions = transactionListService.findAllByWalletNumber(walletNumber);
 
-		return TransactionTicketDTO.valueOf(wallet.get(), transactions);
+		return StatementDTO.valueOf(wallet.get(), transactions);
 
 	}
 

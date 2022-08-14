@@ -34,8 +34,8 @@ import com.mywallet.mock.TransactionMock;
 import com.mywallet.mock.WalletMock;
 import com.mywallet.wallet.api.dto.BalanceTicketDTO;
 import com.mywallet.wallet.api.dto.DepositDTO;
-import com.mywallet.wallet.api.dto.TransactionDetailDTO;
 import com.mywallet.wallet.api.dto.TransactionTicketDTO;
+import com.mywallet.wallet.api.dto.StatementDTO;
 import com.mywallet.wallet.api.dto.TransferDTO;
 import com.mywallet.wallet.api.dto.WalletDTO;
 import com.mywallet.wallet.api.dto.WithdrawDTO;
@@ -346,7 +346,7 @@ public class WalletControllerTest {
 
 	@Test
 	public void transaction_empty() throws Exception {
-		this.controller.perform(get("/wallet/" + UUID.randomUUID() + "/transaction")).andExpect(status().isNoContent());
+		this.controller.perform(get("/wallet/" + UUID.randomUUID() + "/statement")).andExpect(status().isNoContent());
 	}
 
 	@Test
@@ -358,31 +358,31 @@ public class WalletControllerTest {
 		when(transactionListService.findAllByWalletNumber(any())).thenReturn(List.of(transaction));
 
 		MvcResult response = this.controller
-				.perform(get("/wallet/" + wallet.getNumber() + "/transaction"))
+				.perform(get("/wallet/" + wallet.getNumber() + "/statement"))
 				.andExpect(status().isOk())
 		.andReturn();
 
-		TransactionTicketDTO transactionTicketDTO = wrapperHelper.unwrapper(response.getResponse().getContentAsString(), TransactionTicketDTO.class);
+		StatementDTO statementDTO = wrapperHelper.unwrapper(response.getResponse().getContentAsString(), StatementDTO.class);
 
-		assertNotNull(transactionTicketDTO);
-		assertEquals(wallet.getBalance(), transactionTicketDTO.getBalance());
+		assertNotNull(statementDTO);
+		assertEquals(wallet.getBalance(), statementDTO.getBalance());
 
-		assertNotNull(transactionTicketDTO.getWallet());
-		assertEquals(wallet.getNumber(), transactionTicketDTO.getWallet().getNumber());
+		assertNotNull(statementDTO.getWallet());
+		assertEquals(wallet.getNumber(), statementDTO.getWallet().getNumber());
 
-		assertNotNull(transactionTicketDTO.getWallet().getPerson());
-		assertEquals(wallet.getPerson().getName(), transactionTicketDTO.getWallet().getPerson().getName());
+		assertNotNull(statementDTO.getWallet().getPerson());
+		assertEquals(wallet.getPerson().getName(), statementDTO.getWallet().getPerson().getName());
 
-		assertNotNull(transactionTicketDTO.getTransactions());
-		assertFalse(transactionTicketDTO.getTransactions().isEmpty());
+		assertNotNull(statementDTO.getTransactions());
+		assertFalse(statementDTO.getTransactions().isEmpty());
 
-		TransactionDetailDTO transactionDetailDTO = transactionTicketDTO.getTransactions().get(0);
-		assertEquals(transaction.getNumber(), transactionDetailDTO.getNumber());
-		assertEquals(transaction.getDateTime(), transactionDetailDTO.getDateTime());
-		assertEquals(transaction.getOperation(), transactionDetailDTO.getOperation());
-		assertEquals(transaction.getType(), transactionDetailDTO.getType());
-		assertEquals(transaction.getValue(), transactionDetailDTO.getValue());
-		assertEquals(transaction.getObservation(), transactionDetailDTO.getObservation());
+		TransactionTicketDTO transactionTicketDTO = statementDTO.getTransactions().get(0);
+		assertEquals(transaction.getNumber(), transactionTicketDTO.getNumber());
+		assertEquals(transaction.getDateTime(), transactionTicketDTO.getDateTime());
+		assertEquals(transaction.getOperation(), transactionTicketDTO.getOperation());
+		assertEquals(transaction.getType(), transactionTicketDTO.getType());
+		assertEquals(transaction.getValue(), transactionTicketDTO.getValue());
+		assertEquals(transaction.getObservation(), transactionTicketDTO.getObservation());
 	}
 
 }
