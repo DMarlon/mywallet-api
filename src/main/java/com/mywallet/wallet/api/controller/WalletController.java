@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +56,11 @@ public class WalletController {
 		this.walletTransferService = walletTransferService;
 		this.walletListService = walletListService;
 		this.transactionListService = transactionListService;
+	}
+
+	@GetMapping
+	public List<WalletDTO> list() {
+		return walletListService.findAll().stream().map(WalletDTO::valueOf).collect(Collectors.toList());
 	}
 
 	@PostMapping

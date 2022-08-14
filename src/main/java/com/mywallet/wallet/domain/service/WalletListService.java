@@ -1,5 +1,6 @@
 package com.mywallet.wallet.domain.service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,6 +17,10 @@ public class WalletListService {
 
 	public WalletListService(WalletRepository walletRepository) {
 		this.walletRepository = walletRepository;
+	}
+
+	public List<Wallet> findAll() {
+		return this.walletRepository.findAll();
 	}
 
 	public Optional<Wallet> findByNumber(UUID number) {
