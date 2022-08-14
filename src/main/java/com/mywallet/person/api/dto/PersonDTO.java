@@ -2,13 +2,10 @@ package com.mywallet.person.api.dto;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.mywallet.person.domain.model.Person;
 
 public class PersonDTO {
 
-	@JsonProperty(access = Access.WRITE_ONLY)
 	private Long id;
 	private String name;
 	private String surname;
