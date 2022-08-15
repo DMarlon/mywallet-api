@@ -1,5 +1,6 @@
 package com.mywallet.wallet.domain.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,6 +19,9 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
 	boolean existsByNumber(@Param("number") UUID number, @Param("id") Long id);
 
 	Optional<Wallet> findByNumber(UUID number);
+
+	@Query("FROM Wallet e order by e.person.name, e.person.surname")
+	List<Wallet> findAll();
 
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	@Query("FROM Wallet w WHERE w.number = :number")
